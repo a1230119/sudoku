@@ -439,7 +439,7 @@
      <rect>
       <x>440</x>
       <y>220</y>
-      <width>81</width>
+      <width>91</width>
       <height>31</height>
      </rect>
     </property>
@@ -486,7 +486,7 @@
      </font>
     </property>
     <property name="text">
-     <string>Pause</string>
+     <string>Generate</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton2">
@@ -494,7 +494,7 @@
      <rect>
       <x>440</x>
       <y>270</y>
-      <width>81</width>
+      <width>91</width>
       <height>31</height>
      </rect>
     </property>
@@ -504,7 +504,7 @@
      </font>
     </property>
     <property name="text">
-     <string>Clear Board</string>
+     <string>Solve</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton3">
@@ -512,7 +512,7 @@
      <rect>
       <x>440</x>
       <y>320</y>
-      <width>81</width>
+      <width>91</width>
       <height>31</height>
      </rect>
     </property>
@@ -522,7 +522,7 @@
      </font>
     </property>
     <property name="text">
-     <string>New Puzzle</string>
+     <string>Set by player</string>
     </property>
    </widget>
    <widget class="QTableWidget" name="tableWidget">
@@ -949,6 +949,9 @@
       </disabled>
      </palette>
     </property>
+    <property name="layoutDirection">
+     <enum>Qt::LeftToRight</enum>
+    </property>
     <property name="frameShape">
      <enum>QFrame::NoFrame</enum>
     </property>
@@ -966,6 +969,9 @@
     </property>
     <property name="autoScroll">
      <bool>false</bool>
+    </property>
+    <property name="textElideMode">
+     <enum>Qt::ElideLeft</enum>
     </property>
     <property name="rowCount">
      <number>9</number>
