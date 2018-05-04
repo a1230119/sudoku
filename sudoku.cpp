@@ -69,7 +69,6 @@ void Sudoku::checknum()
                 check[value - 1] = false;
         }
     }
-
 }
 
 bool Sudoku::isCorrect()
