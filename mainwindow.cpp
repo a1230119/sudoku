@@ -6,9 +6,9 @@
 #include <QTableWidgetItem>
 #include <vector>
 #include <QString>
-#include <QDebug>
 #include <QLabel>
 
+using namespace std;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -46,6 +46,7 @@ bool MainWindow::solve(Sudoku question, Sudoku &answer)
 {
     int firstZero;
     firstZero = question.getFirstZeroIndex();
+    vector<int> result;
     if(firstZero == -1)//end condition
     {
         if(question.isCorrect())
@@ -55,10 +56,23 @@ bool MainWindow::solve(Sudoku question, Sudoku &answer)
         }
         return false;
     }
-    //else
-    //{
+    else
+    {
+        int row, col, cell;
+        row = firstZero / 9;
+        col = firstZero % 9;
+        if(firstZero < 26)
+            cell = col / 3;
+        else if(firstZero >= 27 && firstZero < 54)
+            cell = 3 + col / 3;
+        else
+            cell = 6 + col / 3;
+        result = Sudoku::findnum(Sudoku::row_vector[row], Sudoku::column_vector[col], Sudoku::cells_vector[cell]);
+        for(int num = 1; num <= result.size(); ++num)
+        {
 
-    //}
+        }
+    }
 }
 
 void MainWindow::getkey(){

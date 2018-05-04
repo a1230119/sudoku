@@ -39,38 +39,6 @@ int Sudoku::getFirstZeroIndex()
     return -1;
 }
 
-bool Sudoku::checkUnity(int arr[])
-{
-    int arr_unity[9];
-    for(int i = 0; i < 9; ++i)
-        arr_unity[i]=0;
-    for(int i = 0; i < 9; ++i)
-        ++arr_unity[arr[i - 1]];
-    for(int i = 0; i < 9; ++i)
-        if(arr_unity[i] != 1)
-            return false;
-    return true;
-}
-
-void Sudoku::checknum()
-{
-    bool check[9];
-    vector<int> row_vector[9];
-    vector<int> column_vector[9];
-    vector<int> cells_vector[9];
-    for(int i = 0; i < 9; ++i)
-    {
-        for(int j = 0; j < 9; ++j)
-        {
-            int value = map[9 * i + j];
-            if(value > 0)
-                check[value - 1] = true;
-            else
-                check[value - 1] = false;
-        }
-    }
-}
-
 bool Sudoku::isCorrect()
 {
     bool check_result;
@@ -104,4 +72,87 @@ bool Sudoku::isCorrect()
             return false;
     }
     return true;
+}
+
+bool Sudoku::checkUnity(int arr[])
+{
+    int arr_unity[9];
+    for(int i = 0; i < 9; ++i)
+        arr_unity[i]=0;
+    for(int i = 0; i < 9; ++i)
+        ++arr_unity[arr[i - 1]];
+    for(int i = 0; i < 9; ++i)
+        if(arr_unity[i] != 1)
+            return false;
+    return true;
+}
+
+void Sudoku::checknum()//每一列/行/九宮格可填哪些數字
+{
+    bool check[9];
+
+    for(int i = 0; i < 9; ++i)//ckeck rows
+    {
+        for(int j = 0; j < 9; ++j)
+        {
+            int value = map[9 * i + j];
+            if(value > 0)
+                check[value - 1] = true;
+            else
+                check[value - 1] = false;
+        }
+        for(int j = 0; j < 9; ++j)
+            if(!check[j])
+                row_vector[i].push_back(j + 1);
+    }
+    for(int i = 0; i < 9; ++i)//ckeck columns
+    {
+        for(int j = 0; j < 9; ++j)
+        {
+            int value = map[i + 9 * j];
+            if(value > 0)
+                check[value - 1] = true;
+            else
+                check[value - 1] = false;
+        }
+        for(int j = 0; j < 9; ++j)
+            if(!check[j])
+                column_vector[i].push_back(j + 1);
+    }
+    for(int i = 0; i < 9; ++i)//ckeck cells
+    {
+        for(int j = 0; j < 9; ++j)
+        {
+            int value = map[27*(i/3) + 3*(i%3) +9*(j/3) + (j%3)];
+            if(value > 0)
+                check[value - 1] = true;
+            else
+                check[value - 1] = false;
+        }
+        for(int j = 0; j < 9; ++j)
+            if(!check[j])
+                cells_vector[i].push_back(j+1);
+    }
+}
+
+std::vector<int> Sudoku::findnum(std::vector<int>& row, std::vector<int>& column, std::vector<int>& cells)
+{
+    vector<int> result;
+    bool checkrow[9], checkcolumn[9], checkcells[9];
+    for(int i = 0; i < 9; ++i)
+    {
+        checkrow[i] = true;//true->不可填
+        checkcolumn[i] = true;
+        checkcells[i] = true;
+    }
+    for(int i = 0; i < row.size(); ++i)
+        checkrow[row[i] - 1]=false;
+    for(int i = 0; i < column.size(); ++i)
+        checkcolumn[column[i] - 1]=false;
+    for(int i = 0; i < cells.size(); ++i)
+        checkcells[cells[i] - 1]=false;
+    for(int i = 0; i < 9; ++i)
+        if(!checkrow[i] && !checkcolumn[i] && !checkcells[i])
+            result.push_back(i + 1);
+    return result;
 }
