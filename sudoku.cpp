@@ -88,50 +88,55 @@ bool Sudoku::checkUnity(int arr[])
 }
 
 void Sudoku::checknum(std::vector<std::vector<int> >& rows, std::vector<std::vector<int> >& columns, std::vector<std::vector<int> >& cells)//每一列/行/九宮格可填哪些數字
-{
+{    
     bool check[9];
-
     for(int i = 0; i < 9; ++i)//ckeck rows
     {
+        check[i] = false;
+        vector<int> row;
+        int value;
         for(int j = 0; j < 9; ++j)
         {
-            int value = map[9 * i + j];
+            value = map[9 * i + j];
             if(value > 0)
                 check[value - 1] = true;
-            else
-                check[value - 1] = false;
         }
         for(int j = 0; j < 9; ++j)
             if(!check[j])
-                rows[i].push_back(j + 1);
+                row.push_back(j + 1);
+        rows.push_back(row);
     }
     for(int i = 0; i < 9; ++i)//ckeck columns
     {
+        check[i] = false;
+        vector<int> col;
+        int value;
         for(int j = 0; j < 9; ++j)
         {
-            int value = map[i + 9 * j];
+            value = map[i + 9 * j];
             if(value > 0)
                 check[value - 1] = true;
-            else
-                check[value - 1] = false;
         }
         for(int j = 0; j < 9; ++j)
             if(!check[j])
-                columns[i].push_back(j + 1);
+                col.push_back(j + 1);
+        columns.push_back(col);
     }
     for(int i = 0; i < 9; ++i)//ckeck cells
     {
+        check[i] = false;
+        vector<int> cell;
+        int value;
         for(int j = 0; j < 9; ++j)
         {
-            int value = map[27*(i/3) + 3*(i%3) +9*(j/3) + (j%3)];
+            value = map[27*(i/3) + 3*(i%3) +9*(j/3) + (j%3)];
             if(value > 0)
                 check[value - 1] = true;
-            else
-                check[value - 1] = false;
         }
         for(int j = 0; j < 9; ++j)
             if(!check[j])
-                cells[i].push_back(j+1);
+                cell.push_back(j+1);
+        cells.push_back(cell);
     }
 }
 
