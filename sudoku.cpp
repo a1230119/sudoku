@@ -87,7 +87,7 @@ bool Sudoku::checkUnity(int arr[])
     return true;
 }
 
-void Sudoku::checknum()//每一列/行/九宮格可填哪些數字
+void Sudoku::checknum(std::vector<std::vector<int> >& rows, std::vector<std::vector<int> >& columns, std::vector<std::vector<int> >& cells)//每一列/行/九宮格可填哪些數字
 {
     bool check[9];
 
@@ -103,7 +103,7 @@ void Sudoku::checknum()//每一列/行/九宮格可填哪些數字
         }
         for(int j = 0; j < 9; ++j)
             if(!check[j])
-                row_vector[i].push_back(j + 1);
+                rows[i].push_back(j + 1);
     }
     for(int i = 0; i < 9; ++i)//ckeck columns
     {
@@ -117,7 +117,7 @@ void Sudoku::checknum()//每一列/行/九宮格可填哪些數字
         }
         for(int j = 0; j < 9; ++j)
             if(!check[j])
-                column_vector[i].push_back(j + 1);
+                columns[i].push_back(j + 1);
     }
     for(int i = 0; i < 9; ++i)//ckeck cells
     {
@@ -131,11 +131,11 @@ void Sudoku::checknum()//每一列/行/九宮格可填哪些數字
         }
         for(int j = 0; j < 9; ++j)
             if(!check[j])
-                cells_vector[i].push_back(j+1);
+                cells[i].push_back(j+1);
     }
 }
 
-std::vector<int> Sudoku::findnum(std::vector<int>& row, std::vector<int>& column, std::vector<int>& cells)
+std::vector<int> Sudoku::findnum(std::vector<int>& row, std::vector<int>& column, std::vector<int>& cell)
 {
     vector<int> result;
     bool checkrow[9], checkcolumn[9], checkcells[9];
@@ -149,8 +149,8 @@ std::vector<int> Sudoku::findnum(std::vector<int>& row, std::vector<int>& column
         checkrow[row[i] - 1]=false;
     for(int i = 0; i < column.size(); ++i)
         checkcolumn[column[i] - 1]=false;
-    for(int i = 0; i < cells.size(); ++i)
-        checkcells[cells[i] - 1]=false;
+    for(int i = 0; i < cell.size(); ++i)
+        checkcells[cell[i] - 1]=false;
     for(int i = 0; i < 9; ++i)
         if(!checkrow[i] && !checkcolumn[i] && !checkcells[i])
             result.push_back(i + 1);

@@ -23,14 +23,16 @@ MainWindow::MainWindow(QWidget *parent) :
     //QTableWidgetItem * prop = new QTableWidgetItem();
     //prop->setTextAlignment(Qt::AlignRight);
     //ui->tableWidget->item(2,3)->setTextAlignment(Qt::AlignCenter);
+    int ss[81]={8,0,5,3,2,0,4,1,7,2,0,3,1,7,5,8,6,9,1,9,7,6,8,4,5,0,3,3,1,9,0,5,8,6,7,4,4,2,6,0,9,1,3,5,8,5,7,8,4,3,0,1,9,2,7,5,4,9,1,3,2,0,6,6,8,2,5,4,0,9,3,1,9,3,1,8,6,2,7,0,5};
     for(int i = 0; i < 9; ++i)
     {
         for(int j = 0; j < 9; ++j)
         {
-            ui->tableWidget->setItem(i, j, new QTableWidgetItem(""));
+            QString convert = QString::number(ss[i*9+j]);
+            ui->tableWidget->setItem(i, j, new QTableWidgetItem(convert));
         }
     }
-    ui->tableWidget->item(3,3)->text();
+    //ui->tableWidget->item(3,3)->text();
 
     connect(ui->pushButton1, SIGNAL(clicked(bool)), this, SLOT(on_pushButton1_clicked()));
     connect(ui->pushButton2, SIGNAL(clicked(bool)), this, SLOT(on_pushButton2_clicked()));
@@ -46,6 +48,11 @@ bool MainWindow::solve(Sudoku question, Sudoku &answer)
 {
     int firstZero;
     firstZero = question.getFirstZeroIndex();
+    vector<vector<int>> row_vector;
+    vector<vector<int>> column_vector;
+    vector<vector<int>> cells_vector;
+    Sudoku sudo;
+    sudo.checknum(row_vector, column_vector, cells_vector);
     vector<int> result;
     if(firstZero == -1)//end condition
     {
@@ -61,17 +68,15 @@ bool MainWindow::solve(Sudoku question, Sudoku &answer)
         int row, col, cell;
         row = firstZero / 9;
         col = firstZero % 9;
-        if(firstZero < 26)
-            cell = col / 3;
-        else if(firstZero >= 27 && firstZero < 54)
-            cell = 3 + col / 3;
-        else
-            cell = 6 + col / 3;
-        result = Sudoku::findnum(Sudoku::row_vector[row], Sudoku::column_vector[col], Sudoku::cells_vector[cell]);
-        for(int num = 1; num <= result.size(); ++num)
+        cell = (firstZero/27) * 3 + col / 3;
+        result = sudo.findnum(row_vector[row], column_vector[col], cells_vector[cell]);
+        for(int i = 0; i < result.size(); ++i)
         {
-
+            question.setElement(firstZero, result.at(i));
+            if(solve(question, answer))
+                return true;
         }
+        return false;
     }
 }
 
