@@ -60,6 +60,7 @@ bool Sudoku::isCorrect()
         if(check_result == false)
             return false;
     }
+
     for(int i = 0; i < 9; ++i)//check cells
     {
         for(int j = 0; j < 9; ++j)
@@ -80,7 +81,7 @@ bool Sudoku::checkUnity(int arr[])
     for(int i = 0; i < 9; ++i)
         arr_unity[i]=0;
     for(int i = 0; i < 9; ++i)
-        ++arr_unity[arr[i - 1]];
+        ++arr_unity[arr[i] - 1];
     for(int i = 0; i < 9; ++i)
         if(arr_unity[i] != 1)
             return false;
@@ -90,12 +91,13 @@ bool Sudoku::checkUnity(int arr[])
 void Sudoku::checknum(std::vector<std::vector<int> >& rows, std::vector<std::vector<int> >& columns, std::vector<std::vector<int> >& cells)//每一列/行/九宮格可填哪些數字
 {    
     bool check[9];
-    for(int i = 0; i < 9; ++i)
-        check[i] = false;
+
     for(int i = 0; i < 9; ++i)//ckeck rows
     {
         vector<int> row;
         int value;
+        for(int j = 0; j < 9; ++j)//initialize check[9]
+            check[j] = false;//false -> 都可以填(check[i]代表數字i+1)
         for(int j = 0; j < 9; ++j)
         {
             value = map[9 * i + j];
@@ -107,16 +109,14 @@ void Sudoku::checknum(std::vector<std::vector<int> >& rows, std::vector<std::vec
                 row.push_back(j + 1);
         rows.push_back(row);
     }
-    for(int i = 0; i < 9; ++i)
-        check[i] = false;
     for(int i = 0; i < 9; ++i)//ckeck columns
     {
-        //check[9] initialized
         vector<int> col;
         int value;
         for(int j = 0; j < 9; ++j)
+            check[j] = false;
+        for(int j = 0; j < 9; ++j)
         {
-            //check[9] initialized
             value = map[i + 9 * j];
             if(value > 0)
                 check[value - 1] = true;
@@ -126,12 +126,12 @@ void Sudoku::checknum(std::vector<std::vector<int> >& rows, std::vector<std::vec
                 col.push_back(j + 1);
         columns.push_back(col);
     }
-    for(int i = 0; i < 9; ++i)
-        check[i] = false;
     for(int i = 0; i < 9; ++i)//ckeck cells
     {
         vector<int> cell;
         int value;
+        for(int j = 0; j < 9; ++j)
+            check[j] = false;
         for(int j = 0; j < 9; ++j)
         {
             value = map[27*(i/3) + 3*(i%3) +9*(j/3) + (j%3)];
