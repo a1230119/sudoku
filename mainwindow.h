@@ -16,7 +16,6 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     bool solve(Sudoku question, Sudoku & answer);
-    void getkey();
 
 private slots:
     void on_pushButton2_clicked();
