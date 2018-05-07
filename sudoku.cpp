@@ -1,5 +1,7 @@
 #include "sudoku.h"
 #include <vector>
+#include <ctime>
+#include <cstdlib>
 
 using namespace std;
 
@@ -167,7 +169,3 @@ std::vector<int> Sudoku::findnum(std::vector<int>& row, std::vector<int>& column
     return result;
 }
 
-void Sudoku::generateQuestion()
-{
-
-}

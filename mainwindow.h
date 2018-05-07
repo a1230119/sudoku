@@ -16,6 +16,8 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     bool solve(Sudoku question, Sudoku & answer);
+    void changeNum(int array[]);
+    void changeRowCol(int array[]);
 
 private slots:
     void on_pushButton1_clicked();
