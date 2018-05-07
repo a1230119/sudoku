@@ -166,3 +166,8 @@ std::vector<int> Sudoku::findnum(std::vector<int>& row, std::vector<int>& column
             result.push_back(i + 1);
     return result;
 }
+
+void Sudoku::generateQuestion()
+{
+
+}
