@@ -90,7 +90,7 @@ bool Sudoku::checkUnity(int arr[])
     return true;
 }
 
-void Sudoku::checknum(std::vector<std::vector<int> >& rows, std::vector<std::vector<int> >& columns, std::vector<std::vector<int> >& cells)//每一列/行/九宮格可填哪些數字
+void Sudoku::checknum(std::vector<std::vector<int>>& rows, std::vector<std::vector<int>>& columns, std::vector<std::vector<int>>& cells)//每一列/行/九宮格可填哪些數字
 {    
     bool check[9];
 

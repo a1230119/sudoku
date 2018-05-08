@@ -8,7 +8,7 @@
 #include <QString>
 #include <QLabel>
 #include <algorithm>
-#include <QVector>
+#include <QPalette>
 
 using namespace std;
 
@@ -23,6 +23,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->pushButton2->setStyleSheet("QPushButton{ background-color: rgb(65, 97, 123); color: white; border-radius: 10px; border: 2px groove gray; border-style: outset; } QPushButton:hover{ background-color: white; color: rgb(65, 97, 123); } QPushButton:pressed{ background-color: rgb(91, 167, 226); border-style: inset; } ");
     ui->pushButton3->setStyleSheet("QPushButton{ background-color: rgb(65, 97, 123); color: white; border-radius: 10px; border: 2px groove gray; border-style: outset; } QPushButton:hover{ background-color: white; color: rgb(65, 97, 123); } QPushButton:pressed{ background-color: rgb(91, 167, 226); border-style: inset; } ");
     ui->pushButton4->setStyleSheet("QPushButton{ background-color: rgb(65, 97, 123); color: white; border-radius: 10px; border: 2px groove gray; border-style: outset; } QPushButton:hover{ background-color: white; color: rgb(65, 97, 123); } QPushButton:pressed{ background-color: rgb(91, 167, 226); border-style: inset; } ");
+    ui->pushButton5->setStyleSheet("QPushButton{ background-color: rgb(65, 97, 123); color: white; border-radius: 10px; border: 2px groove gray; border-style: outset; } QPushButton:hover{ background-color: white; color: rgb(65, 97, 123); } QPushButton:pressed{ background-color: rgb(91, 167, 226); border-style: inset; } ");
     ui->label->setText("");
 
     for(int i = 0; i < 9; ++i)//initialize
@@ -75,7 +76,7 @@ bool MainWindow::solve(Sudoku question, Sudoku &answer)
     }
 }
 
-void MainWindow::changeNum(vector<int>& array)
+void MainWindow::changeNum(int array[])
 {
     srand(time(NULL));
     int a = rand()%9 + 1;
@@ -92,7 +93,7 @@ void MainWindow::changeNum(vector<int>& array)
     }
 }
 
-void MainWindow::changeRowCol(vector<int>& array)
+void MainWindow::changeRowCol(int array[])
 {
     srand(time(NULL));
     int a = rand()%3;
@@ -134,7 +135,7 @@ vector<int> MainWindow::randIndex()
     }
     srand(time(NULL));
     random_shuffle(init.begin(), init.end());//產生不重複亂數
-    int r = rand()%20 + 40;
+    int r = rand()%10 + 50;
     for(int i = 0; i < r; ++i)//取前面r個亂數
         result.push_back(init.at(i));
     sort(result.begin(), result.end());
@@ -143,59 +144,75 @@ vector<int> MainWindow::randIndex()
 
 void MainWindow::on_pushButton1_clicked()//generate
 {
-    ui->pushButton4->setEnabled(false);
+    ui->pushButton4->setEnabled(false);//不可以給使用者輸入
     for(int i = 0; i < 9; ++i)
     {
         for(int j = 0; j < 9; ++j)
         {
             if(ui->tableWidget->item(i, j)->text() != "")
             {
-                on_pushButton3_clicked();
+                on_pushButton3_clicked();//clear
             }
         }
     }
-    vector<int> generate_map;
-    vector<int> a {5, 4, 6, 9, 2, 7, 8, 1, 3, 2, 7, 3, 6, 8, 1, 9, 5, 4, 9, 8, 1, 3, 4, 5, 6, 7, 2, 6, 9, 5, 7, 1, 2, 4, 3, 8, 1, 2, 8, 4, 6, 3, 5, 9, 7, 7, 3, 4, 8, 5, 9, 1, 2, 6, 3, 6, 7, 1, 9, 8, 2, 4, 5, 8, 5, 9, 2, 3, 4, 7, 6, 1, 4, 1, 2, 5, 7, 6, 3, 8, 9};
-    vector<int> b {3, 8, 9, 1, 4, 5, 6, 2, 7, 2, 4, 7, 9, 8, 6, 3, 5, 1, 6, 5, 1, 7, 2, 3, 9, 8, 4, 9, 3, 5, 2, 6, 7, 4, 1, 8, 8, 6, 2, 4, 9, 1, 5, 7, 3, 7, 1, 4, 5, 3, 8, 2, 6, 9, 5, 9, 8, 6, 1, 4, 7, 3, 2, 4, 7, 3, 8, 5, 2, 1, 9, 6, 1, 2, 6, 3, 7, 9, 8, 4, 5};
-    vector<int> c {9, 2, 3, 8, 1, 6, 4, 7, 5, 6, 4, 5, 9, 2, 7, 1, 3, 8, 8, 1, 7, 3, 5, 4, 6, 2, 9, 7, 9, 8, 4, 6, 3, 2, 5, 1, 5, 6, 4, 2, 8, 1, 3, 9, 7, 2, 3, 1, 7, 9, 5, 8, 6, 4, 4, 8, 9, 6, 7, 2, 5, 1, 3, 3, 5, 2, 1, 4, 9, 7, 8, 6, 1, 7, 6, 5, 3, 8, 9, 4, 2};
-    //int d[81]
+    int generate_map[81] = {0};
+    int a[81] = {5, 4, 6, 9, 2, 7, 8, 1, 3, 2, 7, 3, 6, 8, 1, 9, 5, 4, 9, 8, 1, 3, 4, 5, 6, 7, 2, 6, 9, 5, 7, 1, 2, 4, 3, 8, 1, 2, 8, 4, 6, 3, 5, 9, 7, 7, 3, 4, 8, 5, 9, 1, 2, 6, 3, 6, 7, 1, 9, 8, 2, 4, 5, 8, 5, 9, 2, 3, 4, 7, 6, 1, 4, 1, 2, 5, 7, 6, 3, 8, 9};
+    int b[81] = {3, 8, 9, 1, 4, 5, 6, 2, 7, 2, 4, 7, 9, 8, 6, 3, 5, 1, 6, 5, 1, 7, 2, 3, 9, 8, 4, 9, 3, 5, 2, 6, 7, 4, 1, 8, 8, 6, 2, 4, 9, 1, 5, 7, 3, 7, 1, 4, 5, 3, 8, 2, 6, 9, 5, 9, 8, 6, 1, 4, 7, 3, 2, 4, 7, 3, 8, 5, 2, 1, 9, 6, 1, 2, 6, 3, 7, 9, 8, 4, 5};
+    int c[81] = {9, 2, 3, 8, 1, 6, 4, 7, 5, 6, 4, 5, 9, 2, 7, 1, 3, 8, 8, 1, 7, 3, 5, 4, 6, 2, 9, 7, 9, 8, 4, 6, 3, 2, 5, 1, 5, 6, 4, 2, 8, 1, 3, 9, 7, 2, 3, 1, 7, 9, 5, 8, 6, 4, 4, 8, 9, 6, 7, 2, 5, 1, 3, 3, 5, 2, 1, 4, 9, 7, 8, 6, 1, 7, 6, 5, 3, 8, 9, 4, 2};
+    int d[81] = {3, 6, 5, 7, 1, 2, 9, 4, 8, 1, 4, 7, 8, 5, 9, 3, 2, 6, 2, 8, 9, 3, 6, 4, 1, 5, 7, 9, 5, 2, 6, 8, 7, 4, 1, 3, 7, 3, 8, 2, 4, 1, 6, 9, 5, 6, 1, 4, 9, 3, 5, 7, 8, 2, 5, 7, 6, 4, 9, 8, 2, 3, 1, 4, 2, 1, 5, 7, 3, 8, 6, 9, 8, 9, 3, 1, 2, 6, 5, 7, 4};
+    int e[81] = {2, 3, 6, 4, 8, 9, 5, 1, 7, 5, 7, 9, 6, 3, 1, 4, 2, 8, 1, 8, 4, 2, 5, 7, 6, 3, 9, 4, 6, 1, 7, 9, 2, 8, 5, 3, 7, 9, 5, 3, 4, 8, 1, 6, 2, 8, 2, 3, 1, 6, 5, 7, 9, 4, 6, 4, 7, 9, 1, 3, 2, 8, 5, 3, 5, 2, 8, 7, 6, 9, 4, 1, 9, 1, 8, 5, 2, 4, 3, 7, 6};
+    Sudoku ques;
     vector<int> rnd = randIndex();
     srand(time(NULL));
-    switch (rand()%3)
+    switch (rand()%5)
     {
     case 0:
-        generate_map = a;
+        for(int i = 0; i < 81; ++i)
+            generate_map[i] = a[i];
         break;
     case 1:
-        generate_map = b;
+        for(int i = 0; i < 81; ++i)
+            generate_map[i] = b[i];
         break;
     case 2:
-        generate_map = c;
+        for(int i = 0; i < 81; ++i)
+            generate_map[i] = c[i];
+        break;
+    case 3:
+        for(int i = 0; i < 81; ++i)
+            generate_map[i] = d[i];
         break;
     default:
-        generate_map = a;
+        for(int i = 0; i < 81; ++i)
+            generate_map[i] = e[i];
         break;
     }
     changeNum(generate_map);
     changeRowCol(generate_map);
     int k = 0;
+    for(int i = 0; i < 81; ++i)
+    {
+        if(k < rnd.size())
+            if(i == rnd.at(k))
+            {
+                generate_map[i] = 0;
+                ++k;
+            }
+    }
+    ques.setMap(generate_map);
+
     for(int i = 0; i < 9; ++i)
     {
         for(int j = 0; j < 9; ++j)
         {
-            if(k < rnd.size())
+            if(ques.getElement(i*9+j)!=0)
             {
-                if((i*9+j) == rnd.at(k))
-                    ++k;
-                else
-                {
-                    QString str = QString::number(generate_map[i*9+j]);
-                    ui->tableWidget->setItem(i, j, new QTableWidgetItem(str));
-                    QTableWidgetItem *item = ui->tableWidget->item(i, j);
-                    item->setTextAlignment(Qt::AlignCenter);
-                    item->setFlags(Qt::NoItemFlags);
-                    item->setBackgroundColor(QColor(136, 217, 245));
-                }
+                QString str = QString::number(ques.getElement(i*9+j));
+                ui->tableWidget->setItem(i, j, new QTableWidgetItem(str));
+                QTableWidgetItem *item = ui->tableWidget->item(i, j);
+                item->setTextAlignment(Qt::AlignCenter);
+                item->setFlags(Qt::NoItemFlags);
+                item->setBackgroundColor(QColor(136, 217, 245));
             }
         }
     }
@@ -203,22 +220,24 @@ void MainWindow::on_pushButton1_clicked()//generate
 
 void MainWindow::on_pushButton2_clicked()//solve
 {
-    int map[81];
+    int map[81] = {0};
     for(int i = 0; i < 9; ++i)
     {
         for(int j = 0; j < 9; ++j)
         {
-            QString str = ui->tableWidget->item(i, j)->text();
-            int num = str.toInt();
-            map[i * 9 + j] = num;
+            if(ui->tableWidget->item(i, j)->flags() == Qt::NoItemFlags)
+            {
+                QString str = ui->tableWidget->item(i, j)->text();
+                int num = str.toInt();
+                map[i * 9 + j] = num;
+            }
+            else
+                map[i * 9 + j] = 0;
         }
     }
     Sudoku ques, ans;
-    //ques.setMap(set_map);
-    for(int i = 0; i < 81; ++i)
-    {
-        ques.setElement(i, map[i]);
-    }
+    ques.setMap(map);
+
     if(solve(ques, ans)){
         for(int i = 0; i < 9; ++i)
         {
@@ -232,15 +251,18 @@ void MainWindow::on_pushButton2_clicked()//solve
                 }
             }
         }
+        ui->label->setText("");
     }
     else
     {
         ui->label->setText("Unsolvable!!");
+        ui->label->setStyleSheet("QLabel{ color: rgb(254, 240, 124);}");
     }
 }
 
 void MainWindow::on_pushButton3_clicked()//clear
 {
+    ui->label->setText("");
     ui->pushButton4->setEnabled(true);
     for(int i = 0; i < 9; ++i)//initialize
     {
@@ -267,4 +289,25 @@ void MainWindow::on_pushButton4_clicked()//set by player
             }
         }
     }
+}
+
+void MainWindow::on_pushButton5_clicked()//check
+{
+    int map[81] = {0};
+    for(int i = 0; i < 9; ++i)
+    {
+        for(int j = 0; j < 9; ++j)
+        {
+            QString str = ui->tableWidget->item(i, j)->text();
+            int num = str.toInt();
+            map[i * 9 + j] = num;
+        }
+    }
+    Sudoku ques;
+    ques.setMap(map);
+    if(ques.isCorrect())
+        ui->label->setText("Correct!!");
+    else
+        ui->label->setText("Incorrect...");
+    ui->label->setStyleSheet("QLabel{ color: rgb(254, 240, 124);}");
 }
