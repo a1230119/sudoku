@@ -7,6 +7,8 @@
 #include <vector>
 #include <QString>
 #include <QLabel>
+#include <algorithm>
+#include <QVector>
 
 using namespace std;
 
@@ -83,7 +85,7 @@ void MainWindow::changeNum(int array[])
         {
             if(array[i] == a)
                 array[i] = b;
-            else
+            else if(array[i] == b)
                 array[i] = a;
         }
     }
@@ -122,26 +124,89 @@ void MainWindow::changeRowCol(int array[])
     }
 }
 
+vector<int> MainWindow::randIndex()
+{
+    vector<int> init, result;
+    for(int i = 0; i < 81; ++i)
+    {
+        init.push_back(i + 1);
+    }
+    srand(time(NULL));
+    random_shuffle(init.begin(), init.end());//產生不重複亂數
+    int r = rand()%20 + 40;
+    for(int i = 0; i < r; ++i)//取前面r個亂數
+        result.push_back(init.at(i));
+    sort(result.begin(), result.end());
+    return result;
+}
+
 void MainWindow::on_pushButton1_clicked()//generate
 {
     int generate_map[81];
     int a[81] = {5, 4, 6, 9, 2, 7, 8, 1, 3, 2, 7, 3, 6, 8, 1, 9, 5, 4, 9, 8, 1, 3, 4, 5, 6, 7, 2, 6, 9, 5, 7, 1, 2, 4, 3, 8, 1, 2, 8, 4, 6, 3, 5, 9, 7, 7, 3, 4, 8, 5, 9, 1, 2, 6, 3, 6, 7, 1, 9, 8, 2, 4, 5, 8, 5, 9, 2, 3, 4, 7, 6, 1, 4, 1, 2, 5, 7, 6, 3, 8, 9};
-    int b[81] = {0, 0, 0, 0, 4, 5, 0, 0, 0, 0, 0, 0, 9, 0, 0, 0, 0, 1, 6, 5, 0, 0, 0, 0, 9, 0, 4, 0, 3, 0, 2, 0, 0, 4, 0, 0, 0, 6, 0, 0, 9, 0, 0, 7, 0, 0, 0, 4, 0, 0, 8, 0, 6, 0, 5, 0, 8, 0, 0, 0, 0, 3, 2, 4, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 3, 7, 0, 0, 0, 0};
-    int c[81] = {9, 2, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 7, 3, 0, 0, 6, 0, 9, 0, 9, 8, 0, 6, 0, 0, 0, 0, 0, 0, 4, 2, 0, 1, 3, 0, 0, 0, 0, 0, 0, 9, 0, 8, 6, 0, 4, 0, 9, 0, 0, 2, 5, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 4, 2};
+    int b[81] = {3, 8, 9, 1, 4, 5, 6, 2, 7, 2, 4, 7, 9, 8, 6, 3, 5, 1, 6, 5, 1, 7, 2, 3, 9, 8, 4, 9, 3, 5, 2, 6, 7, 4, 1, 8, 8, 6, 2, 4, 9, 1, 5, 7, 3, 7, 1, 4, 5, 3, 8, 2, 6, 9, 5, 9, 8, 6, 1, 4, 7, 3, 2, 4, 7, 3, 8, 5, 2, 1, 9, 6, 1, 2, 6, 3, 7, 9, 8, 4, 5};
+    int c[81] = {9, 2, 3, 8, 1, 6, 4, 7, 5, 6, 4, 5, 9, 2, 7, 1, 3, 8, 8, 1, 7, 3, 5, 4, 6, 2, 9, 7, 9, 8, 4, 6, 3, 2, 5, 1, 5, 6, 4, 2, 8, 1, 3, 9, 7, 2, 3, 1, 7, 9, 5, 8, 6, 4, 4, 8, 9, 6, 7, 2, 5, 1, 3, 3, 5, 2, 1, 4, 9, 7, 8, 6, 1, 7, 6, 5, 3, 8, 9, 4, 2};
+    //int d[81]
+    vector<int> rnd = randIndex();
+    int k = 0;
     srand(time(NULL));
     switch (rand()%3)
     {
     case 0:
+        changeNum(a);
+        changeRowCol(a);
         for(int i = 0; i < Sudoku::sudokuSize; ++i)
-            generate_map[i] = a[i];
+        {
+            if(i == rnd.at(k))
+            {
+                generate_map[i] = 0;
+                ++k;
+            }
+            else
+                generate_map[i] = a[i];
+        }
         break;
-    case 1:
+    /*case 1:
+        changeNum(b);
+        changeRowCol(b);
         for(int i = 0; i < Sudoku::sudokuSize; ++i)
-            generate_map[i] = b[i];
+        {
+            if(i == rnd.at(k))
+            {
+                generate_map[i] = 0;
+                ++k;
+            }
+            else
+                generate_map[i] = b[i];
+        }
+        break;*/
+    case 2:
+        changeNum(c);
+        changeRowCol(c);
+        for(int i = 0; i < Sudoku::sudokuSize; ++i)
+        {
+            if(i == rnd.at(k))
+            {
+                generate_map[i] = 0;
+                ++k;
+            }
+            else
+                generate_map[i] = c[i];
+        }
         break;
     default:
+        changeNum(a);
+        changeRowCol(a);
         for(int i = 0; i < Sudoku::sudokuSize; ++i)
-            generate_map[i] = c[i];
+        {
+            if(i == rnd.at(k))
+            {
+                generate_map[i] = 0;
+                ++k;//k out of range
+            }
+            else
+                generate_map[i] = a[i];
+        }
         break;
     }
 

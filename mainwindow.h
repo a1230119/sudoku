@@ -18,6 +18,7 @@ public:
     bool solve(Sudoku question, Sudoku & answer);
     void changeNum(int array[]);
     void changeRowCol(int array[]);
+    std::vector<int> randIndex();
 
 private slots:
     void on_pushButton1_clicked();

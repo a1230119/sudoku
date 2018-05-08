@@ -147,7 +147,7 @@ void Sudoku::checknum(std::vector<std::vector<int> >& rows, std::vector<std::vec
     }
 }
 
-std::vector<int> Sudoku::findnum(std::vector<int>& row, std::vector<int>& column, std::vector<int>& cell)
+vector<int> Sudoku::findnum(vector<int>& row, vector<int>& column, vector<int>& cell)
 {
     vector<int> result;
     bool checkrow[9], checkcolumn[9], checkcells[9];
