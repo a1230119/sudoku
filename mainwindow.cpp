@@ -98,29 +98,27 @@ void MainWindow::changeRowCol(int array[])
     srand(time(NULL));
     int a = rand()%3;
     int b = rand()%3;
-    int c = rand()%2;
+    int c = rand()%3;
+    int d = rand()%3;
     int temp[27];
-    if(a != b)
+    if(a != b)//change row
     {
-        if(c == 0)//change row
+        for(int i = 0; i < 27; ++i)
         {
-            for(int i = 0; i < 27; ++i)
-            {
-                temp[i] = array[a*27+i];
-                array[a*27+i] = array[b*27+i];
-                array[b*27+i] = temp[i];
-            }
+            temp[i] = array[a*27+i];
+            array[a*27+i] = array[b*27+i];
+            array[b*27+i] = temp[i];
         }
-        else//change column
+    }
+    if(c != d)//change column
+    {
+        for(int i = 0; i < 9; ++i)
         {
-            for(int i = 0; i < 9; ++i)
+            for(int j = 0; j < 3; ++j)
             {
-                for(int j = 0; j < 3; ++j)
-                {
-                    temp[i*3+j] = array[a*3+i*9+j];
-                    array[a*3+i*9+j] = array[b*3+i*9+j];
-                    array[b*3+i*9+j] = temp[i*3+j];
-                }
+                temp[i*3+j] = array[c*3+i*9+j];
+                array[c*3+i*9+j] = array[d*3+i*9+j];
+                array[d*3+i*9+j] = temp[i*3+j];
             }
         }
     }
