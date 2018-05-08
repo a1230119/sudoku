@@ -23,6 +23,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->pushButton2->setStyleSheet("QPushButton{ background-color: rgb(65, 97, 123); color: white; border-radius: 10px; border: 2px groove gray; border-style: outset; } QPushButton:hover{ background-color: white; color: rgb(65, 97, 123); } QPushButton:pressed{ background-color: rgb(91, 167, 226); border-style: inset; } ");
     ui->pushButton3->setStyleSheet("QPushButton{ background-color: rgb(65, 97, 123); color: white; border-radius: 10px; border: 2px groove gray; border-style: outset; } QPushButton:hover{ background-color: white; color: rgb(65, 97, 123); } QPushButton:pressed{ background-color: rgb(91, 167, 226); border-style: inset; } ");
     ui->pushButton4->setStyleSheet("QPushButton{ background-color: rgb(65, 97, 123); color: white; border-radius: 10px; border: 2px groove gray; border-style: outset; } QPushButton:hover{ background-color: white; color: rgb(65, 97, 123); } QPushButton:pressed{ background-color: rgb(91, 167, 226); border-style: inset; } ");
+    ui->label->setText("");
 
     for(int i = 0; i < 9; ++i)//initialize
     {
@@ -74,7 +75,7 @@ bool MainWindow::solve(Sudoku question, Sudoku &answer)
     }
 }
 
-void MainWindow::changeNum(int array[])
+void MainWindow::changeNum(vector<int>& array)
 {
     srand(time(NULL));
     int a = rand()%9 + 1;
@@ -91,7 +92,7 @@ void MainWindow::changeNum(int array[])
     }
 }
 
-void MainWindow::changeRowCol(int array[])
+void MainWindow::changeRowCol(vector<int>& array)
 {
     srand(time(NULL));
     int a = rand()%3;
@@ -142,90 +143,59 @@ vector<int> MainWindow::randIndex()
 
 void MainWindow::on_pushButton1_clicked()//generate
 {
-    int generate_map[81] = {0};
-    int a[81] = {5, 4, 6, 9, 2, 7, 8, 1, 3, 2, 7, 3, 6, 8, 1, 9, 5, 4, 9, 8, 1, 3, 4, 5, 6, 7, 2, 6, 9, 5, 7, 1, 2, 4, 3, 8, 1, 2, 8, 4, 6, 3, 5, 9, 7, 7, 3, 4, 8, 5, 9, 1, 2, 6, 3, 6, 7, 1, 9, 8, 2, 4, 5, 8, 5, 9, 2, 3, 4, 7, 6, 1, 4, 1, 2, 5, 7, 6, 3, 8, 9};
-    int b[81] = {3, 8, 9, 1, 4, 5, 6, 2, 7, 2, 4, 7, 9, 8, 6, 3, 5, 1, 6, 5, 1, 7, 2, 3, 9, 8, 4, 9, 3, 5, 2, 6, 7, 4, 1, 8, 8, 6, 2, 4, 9, 1, 5, 7, 3, 7, 1, 4, 5, 3, 8, 2, 6, 9, 5, 9, 8, 6, 1, 4, 7, 3, 2, 4, 7, 3, 8, 5, 2, 1, 9, 6, 1, 2, 6, 3, 7, 9, 8, 4, 5};
-    int c[81] = {9, 2, 3, 8, 1, 6, 4, 7, 5, 6, 4, 5, 9, 2, 7, 1, 3, 8, 8, 1, 7, 3, 5, 4, 6, 2, 9, 7, 9, 8, 4, 6, 3, 2, 5, 1, 5, 6, 4, 2, 8, 1, 3, 9, 7, 2, 3, 1, 7, 9, 5, 8, 6, 4, 4, 8, 9, 6, 7, 2, 5, 1, 3, 3, 5, 2, 1, 4, 9, 7, 8, 6, 1, 7, 6, 5, 3, 8, 9, 4, 2};
-    //int d[81]
-    vector<int> rnd = randIndex();
-    int k = 0;
-    srand(time(NULL));
-    switch (rand()%3)
-    {
-    case 0:
-        changeNum(a);
-        changeRowCol(a);
-        for(int i = 0; i < Sudoku::sudokuSize; ++i)
-        {
-            if(k < rnd.size())
-                if(i == rnd.at(k))
-                {
-                    generate_map[i] = 0;
-                    ++k;
-                }
-                else
-                    generate_map[i] = a[i];
-        }
-        break;
-    case 1:
-        changeNum(b);
-        changeRowCol(b);
-        for(int i = 0; i < Sudoku::sudokuSize; ++i)
-        {
-            if(k < rnd.size())
-                if(i == rnd.at(k))
-                {
-                    generate_map[i] = 0;
-                    ++k;
-                }
-                else
-                    generate_map[i] = b[i];
-        }
-        break;
-    case 2:
-        changeNum(c);
-        changeRowCol(c);
-        for(int i = 0; i < Sudoku::sudokuSize; ++i)
-        {
-            if(k < rnd.size())
-                if(i == rnd.at(k))
-                {
-                    generate_map[i] = 0;
-                    ++k;
-                }
-                else
-                    generate_map[i] = c[i];
-        }
-        break;
-    default:
-        changeNum(a);
-        changeRowCol(a);
-        for(int i = 0; i < Sudoku::sudokuSize; ++i)
-        {
-            if(k < rnd.size())
-                if(i == rnd.at(k))
-                {
-                    generate_map[i] = 0;
-                    ++k;
-                }
-                else
-                    generate_map[i] = a[i];
-        }
-        break;
-    }
-
+    ui->pushButton4->setEnabled(false);
     for(int i = 0; i < 9; ++i)
     {
         for(int j = 0; j < 9; ++j)
         {
-            if(generate_map[i*9+j] != 0)
+            if(ui->tableWidget->item(i, j)->text() != "")
             {
-                QString str = QString::number(generate_map[i*9+j]);
-                ui->tableWidget->setItem(i, j, new QTableWidgetItem(str));
-                QTableWidgetItem *item = ui->tableWidget->item(i, j);
-                item->setTextAlignment(Qt::AlignCenter);
-                item->setFlags(Qt::NoItemFlags);
-                item->setBackgroundColor(QColor(136, 217, 245));
+                on_pushButton3_clicked();
+            }
+        }
+    }
+    vector<int> generate_map;
+    vector<int> a {5, 4, 6, 9, 2, 7, 8, 1, 3, 2, 7, 3, 6, 8, 1, 9, 5, 4, 9, 8, 1, 3, 4, 5, 6, 7, 2, 6, 9, 5, 7, 1, 2, 4, 3, 8, 1, 2, 8, 4, 6, 3, 5, 9, 7, 7, 3, 4, 8, 5, 9, 1, 2, 6, 3, 6, 7, 1, 9, 8, 2, 4, 5, 8, 5, 9, 2, 3, 4, 7, 6, 1, 4, 1, 2, 5, 7, 6, 3, 8, 9};
+    vector<int> b {3, 8, 9, 1, 4, 5, 6, 2, 7, 2, 4, 7, 9, 8, 6, 3, 5, 1, 6, 5, 1, 7, 2, 3, 9, 8, 4, 9, 3, 5, 2, 6, 7, 4, 1, 8, 8, 6, 2, 4, 9, 1, 5, 7, 3, 7, 1, 4, 5, 3, 8, 2, 6, 9, 5, 9, 8, 6, 1, 4, 7, 3, 2, 4, 7, 3, 8, 5, 2, 1, 9, 6, 1, 2, 6, 3, 7, 9, 8, 4, 5};
+    vector<int> c {9, 2, 3, 8, 1, 6, 4, 7, 5, 6, 4, 5, 9, 2, 7, 1, 3, 8, 8, 1, 7, 3, 5, 4, 6, 2, 9, 7, 9, 8, 4, 6, 3, 2, 5, 1, 5, 6, 4, 2, 8, 1, 3, 9, 7, 2, 3, 1, 7, 9, 5, 8, 6, 4, 4, 8, 9, 6, 7, 2, 5, 1, 3, 3, 5, 2, 1, 4, 9, 7, 8, 6, 1, 7, 6, 5, 3, 8, 9, 4, 2};
+    //int d[81]
+    vector<int> rnd = randIndex();
+    srand(time(NULL));
+    switch (rand()%3)
+    {
+    case 0:
+        generate_map = a;
+        break;
+    case 1:
+        generate_map = b;
+        break;
+    case 2:
+        generate_map = c;
+        break;
+    default:
+        generate_map = a;
+        break;
+    }
+    changeNum(generate_map);
+    changeRowCol(generate_map);
+    int k = 0;
+    for(int i = 0; i < 9; ++i)
+    {
+        for(int j = 0; j < 9; ++j)
+        {
+            if(k < rnd.size())
+            {
+                if((i*9+j) == rnd.at(k))
+                    ++k;
+                else
+                {
+                    QString str = QString::number(generate_map[i*9+j]);
+                    ui->tableWidget->setItem(i, j, new QTableWidgetItem(str));
+                    QTableWidgetItem *item = ui->tableWidget->item(i, j);
+                    item->setTextAlignment(Qt::AlignCenter);
+                    item->setFlags(Qt::NoItemFlags);
+                    item->setBackgroundColor(QColor(136, 217, 245));
+                }
             }
         }
     }
@@ -233,7 +203,7 @@ void MainWindow::on_pushButton1_clicked()//generate
 
 void MainWindow::on_pushButton2_clicked()//solve
 {
-    int map[81],init_map[81];
+    int map[81];
     for(int i = 0; i < 9; ++i)
     {
         for(int j = 0; j < 9; ++j)
@@ -241,7 +211,6 @@ void MainWindow::on_pushButton2_clicked()//solve
             QString str = ui->tableWidget->item(i, j)->text();
             int num = str.toInt();
             map[i * 9 + j] = num;
-            init_map[i * 9 + j] = num;
         }
     }
     Sudoku ques, ans;
@@ -256,7 +225,7 @@ void MainWindow::on_pushButton2_clicked()//solve
             for(int j = 0; j < 9; ++j)
             {
                 QString str = QString::number(ans.getElement(i * 9 + j));
-                if(init_map[i * 9 + j] == 0)
+                if(map[i * 9 + j] == 0)
                 {
                     ui->tableWidget->setItem(i, j, new QTableWidgetItem(str));
                     ui->tableWidget->item(i, j)->setTextAlignment(Qt::AlignCenter);
@@ -272,11 +241,13 @@ void MainWindow::on_pushButton2_clicked()//solve
 
 void MainWindow::on_pushButton3_clicked()//clear
 {
+    ui->pushButton4->setEnabled(true);
     for(int i = 0; i < 9; ++i)//initialize
     {
         for(int j = 0; j < 9; ++j)
         {
             ui->tableWidget->setItem(i, j, new QTableWidgetItem(""));
+            ui->tableWidget->item(i, j)->setTextAlignment(Qt::AlignCenter);
         }
     }
 }
@@ -290,6 +261,7 @@ void MainWindow::on_pushButton4_clicked()//set by player
             if(ui->tableWidget->item(i, j)->text() != "")
             {
                 QTableWidgetItem *item = ui->tableWidget->item(i, j);
+                item->setTextAlignment(Qt::AlignCenter);
                 item->setFlags(Qt::NoItemFlags);
                 item->setBackgroundColor(QColor(136, 217, 245));
             }

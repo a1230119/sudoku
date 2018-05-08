@@ -16,8 +16,8 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     bool solve(Sudoku question, Sudoku & answer);
-    void changeNum(int array[]);
-    void changeRowCol(int array[]);
+    void changeNum(std::vector<int>& array);
+    void changeRowCol(std::vector<int>& array);
     std::vector<int> randIndex();
 
 private slots:
