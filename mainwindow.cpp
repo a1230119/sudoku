@@ -8,7 +8,6 @@
 #include <QString>
 #include <QLabel>
 #include <algorithm>
-#include <QPalette>
 
 using namespace std;
 
