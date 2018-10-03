@@ -1,3 +1,3 @@
 # sudoku
-C++ project2
+C++ project2  
 Qt creator
